@@ -11,6 +11,16 @@ module Api
 
       def create
 
+       cocktail = Cocktail.new(name: params[:name], description: params[:description], instructions: params[:instructions])
+       cocktail.save
+
+       params[:proportions].each do |proportion|
+        ingredient = Ingredient.new(name: proportion[:ingredient_name])
+        ingredient.save
+         Proportion.new(amount: proportion[:amount], cocktail_id: cocktail.id, ingredient_id: ingredient.id).save
+       end
+
+        render json: cocktail
       end
 
       def edit
